@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <main>
+
+    <h1>Leaderboard</h1>
+    <div class="section-container">
+      <section class="left-block">
+        <div class="header-lb">
+          <h2>Recent scores</h2>
+          <button class="btn">Refresh</button>
+        </div>
+        <div class="score-container"></div>
+      </section>
+
+      <section class="right-block">
+        <h2>Add your score</h2>
+        <form action="index_submit" method="post" accept-charset="utf-8">
+          <input type="text" value="" name="name"/>
+          <input type="number" value="" name="score"/>
+          <button class="btn">Submit</button>
+        </form>
+      </section>
+    </div>
+
+  </main>
+</body>
+</html>
