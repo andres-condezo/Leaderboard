@@ -2,17 +2,11 @@
 
 # Leaderboard
 
->	The leaderboard. 
+>	The leaderboard website displays scores submitted by different players. It also allows you to submit your score. All data is preserved thanks to the external Leaderboard API service.
 
 ## Screenshots:
 
-- Mobile version:
-
-![screenshot](./src/img/screenshot-mobile.png)
-
-- Desktop version:
-
-![screenshot](./src/img/screenshot-desktop.png)
+![screenshot](./src/img/screenshot1.png)
 
 ## Built With
 
@@ -25,10 +19,14 @@
 
 ## Learning objectives
 
+- Use callbacks and promises.
+- Learn how to use proper ES6 syntax.
+- Use ES6 modules to write modular JavaScript.
+- Use webpack to bundle JavaScript.
 
 ## Live Demo
 
-[To Do List Live Demo Link](https://andres-condezo.github.io/Leaderboard/dist/)
+[Leaderboard Live Demo Link](https://andres-condezo.github.io/Leaderboard/dist/)
 
 ## Getting Started
 
