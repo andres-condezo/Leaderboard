@@ -5,10 +5,9 @@
 // ***************
 
 class User {
-  constructor(name = '', score = 0, index = 0) {
+  constructor(name = '', score = 0) {
     this.name = name;
     this.score = score;
-    this.index = index;
   }
 }
 
