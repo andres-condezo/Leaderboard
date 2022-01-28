@@ -41,6 +41,21 @@ main {
   border: solid 1px black;
 }
 
+.title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title .msg-container {
+  max-width: 50%;
+  font-family: var(--font-sans);
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: green;
+}
+
 h1 {
   display: flex;
   justify-content: flex-start;
@@ -117,7 +132,7 @@ h1 {
   gap: 1rem;
 }
 
-.right-block form input{
+.right-block form input {
   outline: none;
 }
 
@@ -130,4 +145,8 @@ h1 {
   background-color: #fff;
   font-size: 1rem;
   cursor: pointer;
+}
+
+main .title .error-color {
+  color: #f0f;
 }
