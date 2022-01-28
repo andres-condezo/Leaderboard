@@ -11,11 +11,13 @@ const url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/game
 // App Class
 // ***************
 
-class App {
+class LeaderBoardApp {
   constructor() {
     this.userArr = [];
     this.keyGame = '';
   }
+
+  // Local Storage
 
   // Create a new keyGame
   createGame = async () => {
@@ -47,18 +49,8 @@ class App {
     this.userArr.push(newUser);
   };
 
-  // Get the index of a new user
-  getIndex = () => this.userArr.length + 1;
-
-  // Update the index property for every user of the array.
-  updateIndex = () => {
-    this.userArr.forEach((user, index) => {
-      user.index = index + 1;
-    });
-  }
-
-  renderUser = (user) => {
-    const place = createElement('span', { style: 'font-weight:bold' }, [`${user.index}`]);
+  renderUser = (user, index) => {
+    const place = createElement('span', { style: 'font-weight:bold' }, [String(index + 1)]);
     const name = createElement('span', { style: 'font-weight:bold' }, [`${user.name}`]);
     const score = createElement('span', { style: 'font-weight:bold' }, [`${String(user.score)}`]);
     const children = [place, name, score];
@@ -78,8 +70,7 @@ class App {
         data.forEach((user) => {
           const name = user.user;
           const score = Number(user.score);
-          const index = this.getIndex();
-          const newUser = new User(name, score, index);
+          const newUser = new User(name, score);
 
           this.addUser(newUser);
         });
@@ -103,9 +94,8 @@ class App {
   displayScores = () => {
     $root.innerHTML = '';
     this.sortUserArr();
-    this.updateIndex();
-    this.userArr.forEach((user) => {
-      this.renderUser(user);
+    this.userArr.forEach((user, index) => {
+      this.renderUser(user, index);
     });
   }
 
@@ -113,16 +103,38 @@ class App {
     this.userArr = [];
     await this.getUserArr();
     this.displayScores();
+    this.displayMessage('* Score refreshed successfully.', false);
+  }
+
+  displayMessage = (msg, error) => {
+    const $msgContainer = $('.msg-container');
+
+    if (error) $msgContainer.classList.add('error-color');
+    else $msgContainer.classList.remove('error-color');
+    $msgContainer.innerHTML = msg;
+    setTimeout(() => { $msgContainer.innerHTML = ''; }, 3000);
+  }
+
+  isNotValid = (name) => {
+    const bool = name.value.trim() === '';
+    return bool;
   }
 
   submit = (event, form) => {
     event.preventDefault();
     const [name, score] = form.querySelectorAll('input');
+    const successMsg = '* Score added successfully, please click the refresh button.';
+    const errorMsg = '* Please enter a valid input.';
 
-    this.postUser(name.value, score.value);
-    form.reset();
-    name.focus();
+    if (this.isNotValid(name)) {
+      this.displayMessage(errorMsg, true);
+    } else {
+      this.postUser(name.value, score.value);
+      this.displayMessage(successMsg, false);
+      form.reset();
+      name.focus();
+    }
   }
 }
 
-export default App;
+export default LeaderBoardApp;
