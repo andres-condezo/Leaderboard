@@ -41,6 +41,21 @@ main {
   border: solid 1px black;
 }
 
+.title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title .msg-container {
+  max-width: 50%;
+  font-family: var(--font-sans);
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: green;
+}
+
 h1 {
   display: flex;
   justify-content: flex-start;
@@ -90,6 +105,16 @@ h1 {
   background-color: lightgray;
 }
 
+.score-container .article span {
+  width: 20%;
+  text-align: center;
+}
+
+.score-container .article span:nth-child(2) {
+  width: 60%;
+  text-align: center;
+}
+
 .right-block {
   width: 50%;
   padding: 2rem;
@@ -107,6 +132,10 @@ h1 {
   gap: 1rem;
 }
 
+.right-block form input {
+  outline: none;
+}
+
 .btn {
   width: 8rem;
   align-self: flex-end;
@@ -116,4 +145,8 @@ h1 {
   background-color: #fff;
   font-size: 1rem;
   cursor: pointer;
+}
+
+main .title .error-color {
+  color: #f0f;
 }

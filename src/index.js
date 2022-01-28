@@ -1,20 +1,22 @@
+// This Module contains the main functions
+
 import './css/style.css';
-import { createElement, render } from './modules/create-element.js';
-import scoreArr from './modules/score-arr.js';
+import LeaderBoardApp from './modules/app.js';
 import { $ } from './modules/utils.js';
 
-const form = $('form');
-const root = $('.score-container');
+// ***************
+// Main function
+// ***************
 
-const displayScores = (scoreArr) => {
-  scoreArr.forEach((score) => {
-    const text = [`${score.name}: ${String(score.score)}`];
-    const article = createElement('article', { class: 'article' }, text);
-    render(article, root);
-  });
+const main = async () => {
+  const $form = $('form');
+  const app = new LeaderBoardApp();
+
+  await app.createGame();
+  await app.refreshScores();
+  await $form.addEventListener('submit',
+    (event) => { app.submit(event, $form); });
+  $('.refresh-btn').addEventListener('click', app.refreshScores);
 };
 
-displayScores(scoreArr);
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-});
+main();
