@@ -6,7 +6,7 @@
 
 ## Screenshots:
 
-![screenshot](./src/img/screenshot1.png)
+![screenshot](./src/img/screenshot.png)
 
 ## Built With
 
@@ -15,6 +15,7 @@
   - CSS
   - JavaScript
 ### - Technologies used:
+  - npm
   - Webpack
 
 ## Learning objectives
@@ -92,6 +93,7 @@ Give a ⭐️ if you like this project!
 ## Acknowledgments
 
 - Icons from fontAwesome.
+- Background Image: freepick.
 
 ## 📝 License
 
