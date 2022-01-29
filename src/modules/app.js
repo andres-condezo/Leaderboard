@@ -30,12 +30,8 @@ class LeaderBoardApp {
       let key = await fetch(`${url}/`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: 'myGame',
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: 'myGame' }),
         });
       key = await key.json();
       key = await key.result.slice(14, 34);
@@ -81,13 +77,8 @@ class LeaderBoardApp {
     await fetch(`${url}/${this.keyGame}/scores`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user: `${name}`,
-          score: `${score}`,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: `${name}`, score: `${score}` }),
       });
   }
 
@@ -103,7 +94,7 @@ class LeaderBoardApp {
     this.userArr = [];
     await this.getUserArr();
     this.displayScores();
-    this.displayMessage('* Score refreshed successfully.', false);
+    this.displayMessage('* The leader board has been successfully updated..', false);
   }
 
   displayMessage = (msg, error) => {
