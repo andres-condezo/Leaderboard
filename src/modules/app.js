@@ -1,11 +1,15 @@
 // This Module contains the App class
 
+// ****************************
+// Imports and global variables
+// ****************************
+
 import User from './user.js';
 import { createElement, render } from './render.js';
 import { $ } from './utils.js';
 
 const $root = $('.score-container');
-const url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games';
+const urlApi = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games';
 
 // ***************
 // App Class
@@ -27,7 +31,7 @@ class LeaderBoardApp {
       const localStorageKeyGame = JSON.parse(localStorage.getItem('keyGame'));
       this.keyGame = localStorageKeyGame;
     } else {
-      let key = await fetch(`${url}/`,
+      let key = await fetch(`${urlApi}/`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -41,10 +45,12 @@ class LeaderBoardApp {
     }
   }
 
+  // Push a new user to the user array.
   addUser = (newUser) => {
     this.userArr.push(newUser);
   };
 
+  // Append a new user to the score container.
   renderUser = (user, index) => {
     const place = createElement('span', { style: 'font-weight:bold' }, [String(index + 1)]);
     const name = createElement('span', { style: 'font-weight:bold' }, [`${user.name}`]);
@@ -54,12 +60,9 @@ class LeaderBoardApp {
     render(li, $root);
   }
 
-  sortUserArr = () => {
-    this.userArr = this.userArr.sort((a, b) => (b.score) - (a.score));
-  }
-
+  // Send a GET request to the API server to get all users score.
   getUserArr = async () => {
-    await fetch(`${url}/${this.keyGame}/scores`)
+    await fetch(`${urlApi}/${this.keyGame}/scores`)
       .then((res) => res.json())
       .then((res) => res.result)
       .then((data) => {
@@ -73,15 +76,22 @@ class LeaderBoardApp {
       });
   }
 
+  // Send a POST request to the API server to save the new user score.
   postUser = async (name, score) => {
-    await fetch(`${url}/${this.keyGame}/scores`,
+    await fetch(`${urlApi}/${this.keyGame}/scores`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: `${name}`, score: `${score}` }),
+        body: JSON.stringify({ user: `${name.value}`, score: `${score.value}` }),
       });
   }
 
+  // Sort the user array by score.
+  sortUserArr = () => {
+    this.userArr = this.userArr.sort((a, b) => (b.score) - (a.score));
+  }
+
+  // Display the sorted scores in the score container.
   displayScores = () => {
     $root.innerHTML = '';
     this.sortUserArr();
@@ -90,27 +100,34 @@ class LeaderBoardApp {
     });
   }
 
+  // Handle the refresh button click event and update the scores table.
   refreshScores = async () => {
+    const successMsg = '* The leader board has been successfully updated..';
+
     this.userArr = [];
     await this.getUserArr();
     this.displayScores();
-    this.displayMessage('* The leader board has been successfully updated..', false);
+    this.displayMessage(successMsg, false);
   }
 
-  displayMessage = (msg, error) => {
+  // Display a message to the user
+  displayMessage = (msg, isMsgError) => {
     const $msgContainer = $('.msg-container');
 
-    if (error) $msgContainer.classList.add('error-color');
+    if (isMsgError) $msgContainer.classList.add('error-color');
     else $msgContainer.classList.remove('error-color');
+
     $msgContainer.innerHTML = msg;
     setTimeout(() => { $msgContainer.innerHTML = ''; }, 3000);
   }
 
+  // Validation for the name input field.
   isNotValid = (name) => {
     const bool = name.value.trim() === '';
     return bool;
   }
 
+  // Handle the submit button click event and post the new user to the API server.
   submit = (event, form) => {
     event.preventDefault();
     const [name, score] = form.querySelectorAll('input');
@@ -119,12 +136,13 @@ class LeaderBoardApp {
 
     if (this.isNotValid(name)) {
       this.displayMessage(errorMsg, true);
-    } else {
-      this.postUser(name.value, score.value);
-      this.displayMessage(successMsg, false);
-      form.reset();
-      name.focus();
+      return;
     }
+
+    this.postUser(name, score);
+    this.displayMessage(successMsg, false);
+    form.reset();
+    name.focus();
   }
 }
 
