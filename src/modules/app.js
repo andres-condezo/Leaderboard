@@ -23,26 +23,37 @@ class LeaderBoardApp {
 
   // Local Storage
 
+  localStorageIsNotEmpty = () => localStorage.getItem('keyGame');
+
+  saveLocalStorage = () => {
+    const localStorageKeyGame = JSON.stringify(this.keyGame);
+    localStorage.setItem('keyGame', localStorageKeyGame);
+  }
+
+  getLocalStorage = () => {
+    const localStorageKeyGame = JSON.parse(localStorage.getItem('keyGame'));
+    if (this.localStorageIsNotEmpty()) this.keyGame = localStorageKeyGame;
+  }
+
+  // Request a new key game
+  requestKeyGame = async () => {
+    let key = await fetch(`${urlApi}/`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'myGame' }),
+      });
+    key = await key.json();
+    this.keyGame = await key.result.slice(14, 34);
+  }
+
   // Create a new keyGame
   createGame = async () => {
-    const localStorageIsNotEmpty = localStorage.getItem('keyGame');
-
-    if (localStorageIsNotEmpty) {
-      const localStorageKeyGame = JSON.parse(localStorage.getItem('keyGame'));
-      this.keyGame = localStorageKeyGame;
-    } else {
-      let key = await fetch(`${urlApi}/`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: 'myGame' }),
-        });
-      key = await key.json();
-      key = await key.result.slice(14, 34);
-      this.keyGame = key;
-      const localStorageKeyGame = JSON.stringify(this.keyGame);
-      localStorage.setItem('keyGame', localStorageKeyGame);
+    if (this.localStorageIsNotEmpty()) {
+      this.getLocalStorage(); return;
     }
+    await this.requestKeyGame();
+    this.saveLocalStorage();
   }
 
   // Push a new user to the user array.
@@ -122,8 +133,9 @@ class LeaderBoardApp {
   }
 
   // Validation for the name input field.
-  isNotValid = (name) => {
-    const bool = name.value.trim() === '';
+  isNotValid = (nameInput) => {
+    const regex = /^[a-zA-Z0-9_]*$/;
+    const bool = !regex.test(nameInput.value);
     return bool;
   }
 
@@ -132,11 +144,10 @@ class LeaderBoardApp {
     event.preventDefault();
     const [name, score] = form.querySelectorAll('input');
     const successMsg = '* Score added successfully, please click the refresh button.';
-    const errorMsg = '* Please enter a valid input.';
+    const errorMsg = '* User name must contain only letters, numbers and underscores.';
 
     if (this.isNotValid(name)) {
-      this.displayMessage(errorMsg, true);
-      return;
+      this.displayMessage(errorMsg, true); return;
     }
 
     this.postUser(name, score);
