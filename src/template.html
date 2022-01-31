@@ -24,8 +24,8 @@
       <section class="right-block">
         <h2>Add your score</h2>
         <form action="index_submit" method="post" accept-charset="utf-8">
-          <input type="text" value="" name="name" placeholder="Insert the name" required maxlength="20"/>
-          <input type="number" value="" name="score" placeholder="999999999" required min="0" max="999999"/>
+          <input type="text" value="" name="name" placeholder="Name" required maxlength="20"/>
+          <input type="text" value="" name="score" placeholder="Score" required pattern="\d*" maxlength="6"/>
           <button class="btn">Submit</button>
         </form>
       </section>
