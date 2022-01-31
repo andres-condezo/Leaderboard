@@ -127,13 +127,15 @@ class LeaderBoardApp {
 
     if (isMsgError) $msgContainer.classList.add('error-color');
     else $msgContainer.classList.remove('error-color');
+
     $msgContainer.innerHTML = msg;
     setTimeout(() => { $msgContainer.innerHTML = ''; }, 3000);
   }
 
   // Validation for the name input field.
-  isNotValid = (name) => {
-    const bool = name.value.trim() === '';
+  isNotValid = (nameInput) => {
+    const regex = /^[a-zA-Z0-9_]*$/;
+    const bool = !regex.test(nameInput.value);
     return bool;
   }
 
@@ -142,7 +144,7 @@ class LeaderBoardApp {
     event.preventDefault();
     const [name, score] = form.querySelectorAll('input');
     const successMsg = '* Score added successfully, please click the refresh button.';
-    const errorMsg = '* Please enter a valid input.';
+    const errorMsg = '* User name must contain only letters, numbers and underscores.';
 
     if (this.isNotValid(name)) {
       this.displayMessage(errorMsg, true); return;
